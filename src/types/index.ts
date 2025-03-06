@@ -15,6 +15,37 @@ export interface User {
   updated_at?: string;
 }
 
+export interface School {
+  id: string;
+  name: string;
+  address?: string;
+  city?: string;
+  postal_code?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  opening_hour?: string;
+  closing_hour?: string;
+  monday_enabled: boolean;
+  tuesday_enabled: boolean;
+  wednesday_enabled: boolean;
+  thursday_enabled: boolean;
+  friday_enabled: boolean;
+  saturday_enabled: boolean;
+  sunday_enabled: boolean;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface KidSchool {
+  id: string;
+  kid_id: string;
+  school_id: string;
+  school?: School;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface Kid {
   id: string;
   name: string;
@@ -22,6 +53,7 @@ export interface Kid {
   rfid_token: string[];
   monthly_spending_limit?: number;
   is_active: boolean;
+  schools?: School[];
   created_at?: string;
   updated_at?: string;
 }
@@ -129,16 +161,26 @@ export interface Discount {
   updated_at?: string;
 }
 
+// Updated ApiResponse interface to handle the standardized format
 export interface ApiResponse<T> {
+  total: number;
   success: boolean;
   message: string;
   data: T;
+  // Pagination fields
+  page?: number;
+  limit?: number;
+  totalPages?: number;
+  totalItems?: number;
+  hasNextPage?: boolean;
+  hasPrevPage?: boolean;
 }
 
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+// Query parameters interface for standardized filtering
+export interface QueryParams {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  order?: 'asc' | 'desc';
+  [key: string]: any; // Allow for any other filter parameters
 }

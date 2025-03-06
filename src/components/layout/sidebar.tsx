@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import { UserRole } from '@/types';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 // Define navigation items with role-based access control
 interface NavItem {
@@ -18,11 +19,20 @@ interface NavItem {
 export function Sidebar() {
   const pathname = usePathname();
   const { user, hasRole } = useAuth();
+  const t = useTranslations();
+
+  // Extract the current locale from the pathname
+  const getCurrentLocale = (): string => {
+    const pathParts = pathname?.split('/') || [];
+    return pathParts.length > 1 ? pathParts[1] : 'pl'; // Default to 'pl' if no locale found
+  };
+
+  const currentLocale = getCurrentLocale();
 
   const navItems: NavItem[] = [
     {
-      title: 'Dashboard',
-      href: '/dashboard',
+      title: t('navigation.dashboard'),
+      href: `/${currentLocale}/dashboard`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <rect x="3" y="3" width="7" height="9" />
@@ -34,8 +44,8 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.PARENT, UserRole.STAFF],
     },
     {
-      title: 'Kids',
-      href: '/kids',
+      title: t('navigation.kids'),
+      href: `/${currentLocale}/kids`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -47,8 +57,23 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.PARENT],
     },
     {
-      title: 'Orders',
-      href: '/orders',
+      title: t('navigation.schools'),
+      href: `/${currentLocale}/schools`,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+          <path d="M3 21h18" />
+          <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+          <path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4" />
+          <path d="M10 9h4" />
+          <path d="M10 13h4" />
+          <path d="M10 5h4" />
+        </svg>
+      ),
+      allowedRoles: [UserRole.ADMIN, UserRole.STAFF],
+    },
+    {
+      title: t('navigation.orders'),
+      href: `/${currentLocale}/orders`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
@@ -59,8 +84,8 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.PARENT, UserRole.STAFF],
     },
     {
-      title: 'Products',
-      href: '/products',
+      title: t('navigation.products'),
+      href: `/${currentLocale}/products`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="m7.5 4.27 9 5.15" />
@@ -72,8 +97,8 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.STAFF],
     },
     {
-      title: 'Product Groups',
-      href: '/product-groups',
+      title: t('productGroups.title'),
+      href: `/${currentLocale}/product-groups`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M9 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5" />
@@ -84,8 +109,8 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.STAFF],
     },
     {
-      title: 'Discounts',
-      href: '/discounts',
+      title: t('discounts.title'),
+      href: `/${currentLocale}/discounts`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M3 10h18" />
@@ -100,8 +125,8 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.STAFF],
     },
     {
-      title: 'Settings',
-      href: '/settings',
+      title: t('navigation.settings'),
+      href: `/${currentLocale}/settings`,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
@@ -121,7 +146,7 @@ export function Sidebar() {
     <aside className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 hidden md:block">
       <div className="flex flex-col h-full">
         <div className="flex h-16 items-center border-b px-6">
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+          <Link href={`/${currentLocale}/dashboard`} className="flex items-center gap-2 font-semibold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -139,7 +164,7 @@ export function Sidebar() {
               <path d="M9 14v2" />
               <path d="M15 14v2" />
             </svg>
-            <span className="text-xl">Sklepik</span>
+            <span className="text-xl">{t('brand.name')}</span>
           </Link>
         </div>
         <nav className="flex-1 overflow-auto py-4">

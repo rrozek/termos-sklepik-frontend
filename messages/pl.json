@@ -1,0 +1,737 @@
+{
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "success": "Sukces",
+    "submit": "Zatwierdź",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "create": "Utwórz",
+    "select": "Wybierz",
+    "search": "Szukaj",
+    "filter": "Filtruj",
+    "noResults": "Nie znaleziono wyników",
+    "price": "Cena",
+    "toggleMenu": "Przełącz menu",
+    "switchLanguage": "Zmień język",
+    "currency": "zł",
+    "required": "Wymagane",
+    "none": "Brak",
+    "unknown": "Nieznany",
+    "loadingData": "Ładowanie danych...",
+    "loadingKidsData": "Ładowanie danych dzieci...",
+    "loadingSchools": "Ładowanie szkół...",
+    "loadingOrders": "Ładowanie zamówień...",
+    "loadingSchoolDetails": "Ładowanie szczegółów szkoły...",
+    "unauthorized": "Brak uprawnień",
+    "unauthorizedMessage": "Nie masz uprawnień do dostępu do tej strony.",
+    "accessDenied": "Dostęp zabroniony",
+    "saveChanges": "Zapisz zmiany",
+    "addNew": "Dodaj nowy",
+    "actions": "Akcje",
+    "noDataAvailable": "Brak dostępnych danych",
+    "noSchoolsFound": "Nie znaleziono szkół",
+    "noKidsRegistered": "Brak zarejestrowanych dzieci",
+    "noRfidTags": "Brak przypisanych tagów RFID",
+    "noPurchaseHistory": "Brak historii zakupów",
+    "noSchoolsAvailable": "Brak dostępnych szkół. Najpierw dodaj szkoły.",
+    "noKidsAssociated": "Brak dzieci przypisanych do tej szkoły.",
+    "errorLoading": {
+      "title": "Błąd ładowania",
+      "message": "Wystąpił problem z załadowaniem tej strony. Spróbuj ponownie później."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Witaj w Sklepiku",
+      "description": "Zaloguj się na swoje konto, aby kontynuować",
+      "noAccount": "Nie masz konta?",
+      "register": "Zarejestruj się",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Wprowadź swój email",
+          "required": "Email jest wymagany",
+          "invalid": "Nieprawidłowy adres email"
+        },
+        "password": {
+          "label": "Hasło",
+          "placeholder": "Wprowadź swoje hasło",
+          "required": "Hasło jest wymagane"
+        },
+        "submit": "Zaloguj się",
+        "loading": "Logowanie..."
+      },
+      "messages": {
+        "success": "Pomyślnie zalogowano",
+        "error": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
+        "serverError": "Błąd serwera. Spróbuj ponownie później lub skontaktuj się z pomocą techniczną."
+      }
+    },
+    "register": "Zarejestruj",
+    "logout": "Wyloguj",
+    "email": "Email",
+    "password": "Hasło",
+    "name": "Nazwa",
+    "profile": {
+      "title": "Profil",
+      "emailLabel": "Adres email",
+      "nameLabel": "Imię i nazwisko"
+    }
+  },
+  "navigation": {
+    "dashboard": "Panel główny",
+    "orders": "Zamówienia",
+    "products": "Produkty",
+    "kids": "Dzieci",
+    "schools": "Szkoły",
+    "settings": "Ustawienia",
+    "debug": "Debug"
+  },
+  "dashboard": {
+    "welcome": "Witaj ponownie, {name}",
+    "overview": {
+      "parent": "Oto przegląd Twojego konta",
+      "admin": "Oto przegląd systemu"
+    },
+    "loading": "Ładowanie danych panelu...",
+    "error": {
+      "title": "Błąd ładowania panelu",
+      "message": "Nie udało się załadować danych panelu. Spróbuj ponownie później.",
+      "navigation": "Nadal możesz nawigować do innych sekcji używając menu bocznego."
+    },
+    "noKids": {
+      "welcome": "Witaj, {name}",
+      "subtitle": "Zacznijmy od konfiguracji Twojego konta",
+      "title": "Brak dodanych dzieci",
+      "message": "Nie dodałeś jeszcze żadnych dzieci do swojego konta. Zacznij od dodania swoich dzieci, aby zarządzać ich wydatkami w sklepiku szkolnym.",
+      "action": "Dodaj dzieci teraz"
+    },
+    "stats": {
+      "kids": {
+        "title": {
+          "parent": "Twoje dzieci",
+          "admin": "Wszystkie dzieci"
+        },
+        "subtitle": {
+          "parent": "Dzieci zarejestrowane na Twoim koncie",
+          "admin": "Dzieci w systemie"
+        }
+      },
+      "orders": {
+        "title": {
+          "parent": "Twoje zamówienia",
+          "admin": "Wszystkie zamówienia"
+        },
+        "subtitle": {
+          "parent": "Łączna liczba zamówień Twoich dzieci",
+          "admin": "Zamówienia w systemie"
+        }
+      },
+      "spent": {
+        "title": "Suma wydatków",
+        "subtitle": {
+          "parent": "Łączna kwota wydana przez Twoje dzieci",
+          "admin": "Łączna wartość transakcji"
+        }
+      },
+      "average": {
+        "title": "Średnia wartość zamówienia",
+        "subtitle": "Średnia wartość na zamówienie"
+      }
+    },
+    "recentOrders": {
+      "title": "Ostatnie zamówienia",
+      "empty": {
+        "title": "Brak zamówień",
+        "parent": "Twoje dzieci nie dokonały jeszcze żadnych zakupów.",
+        "admin": "W systemie nie ma jeszcze żadnych zamówień."
+      },
+      "table": {
+        "orderId": "ID zamówienia",
+        "kid": "Dziecko",
+        "date": "Data",
+        "total": "Suma",
+        "status": "Status",
+        "unknown": "Nieznany",
+        "unknownDate": "Nieznana data"
+      },
+      "status": {
+        "completed": "Zakończone",
+        "pending": "Oczekujące",
+        "cancelled": "Anulowane"
+      }
+    }
+  },
+  "orders": {
+    "title": "Zamówienia",
+    "description": "Przeglądaj i zarządzaj zamówieniami",
+    "empty": {
+      "title": "Brak zamówień",
+      "description": "Nie ma żadnych zamówień do wyświetlenia. Zamówienia pojawią się tutaj po dokonaniu zakupów."
+    },
+    "list": {
+      "title": "Ostatnie zamówienia",
+      "description": "Zobacz wszystkie zamówienia i ich szczegóły"
+    },
+    "table": {
+      "orderId": "ID zamówienia",
+      "date": "Data",
+      "kid": "Dziecko",
+      "amount": "Kwota",
+      "status": "Status",
+      "actions": "Akcje",
+      "viewDetails": "Szczegóły",
+      "unknown": "Nieznane"
+    },
+    "pagination": {
+      "previous": "Poprzednia",
+      "next": "Następna",
+      "page": "Strona {page} z {total}"
+    },
+    "status": {
+      "completed": "Zakończone",
+      "pending": "Oczekujące",
+      "cancelled": "Anulowane"
+    },
+    "messages": {
+      "fetchError": "Nie udało się pobrać zamówień. Spróbuj ponownie."
+    },
+    "details": {
+      "title": "Szczegóły zamówienia",
+      "orderId": "ID zamówienia:",
+      "date": "Data:",
+      "status": "Status:",
+      "totalAmount": "Kwota całkowita:",
+      "kidName": "Imię dziecka:",
+      "parentId": "ID rodzica:",
+      "rfidToken": "Brelok RFID:",
+      "total": "Suma:"
+    }
+  },
+  "products": {
+    "title": "Produkty",
+    "description": "Zarządzaj produktami dostępnymi w sklepiku",
+    "groups": "Grupy produktów",
+    "add": {
+      "button": "Dodaj produkt",
+      "title": "Dodaj nowy produkt",
+      "description": "Utwórz nowy produkt do sprzedaży w sklepiku"
+    },
+    "form": {
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Baton czekoladowy",
+        "required": "Nazwa produktu jest wymagana"
+      },
+      "price": {
+        "label": "Cena",
+        "placeholder": "2,50",
+        "required": "Cena jest wymagana",
+        "invalid": "Cena musi być poprawną liczbą dodatnią"
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Pyszny baton z mlecznej czekolady"
+      },
+      "ingredients": {
+        "label": "Składniki",
+        "placeholder": "Kakao, mleko, cukier"
+      },
+      "barcode": {
+        "label": "Kod kreskowy",
+        "placeholder": "123456789"
+      },
+      "group": {
+        "label": "Grupa produktów",
+        "placeholder": "Wybierz grupę",
+        "none": "Brak",
+        "unknown": "Nieznana grupa"
+      }
+    },
+    "table": {
+      "name": "Nazwa",
+      "price": "Cena",
+      "group": "Grupa",
+      "actions": "Akcje",
+      "viewDetails": "Zobacz szczegóły"
+    },
+    "messages": {
+      "createSuccess": "Produkt został utworzony pomyślnie.",
+      "createError": "Nie udało się utworzyć produktu. Spróbuj ponownie.",
+      "fetchError": "Nie udało się pobrać produktów. Spróbuj ponownie."
+    }
+  },
+  "productGroups": {
+    "title": "Grupy produktów",
+    "description": "Zarządzaj kategoriami produktów w sklepiku",
+    "add": {
+      "button": "Dodaj grupę produktów",
+      "title": "Dodaj nową grupę produktów",
+      "description": "Utwórz nową grupę do kategoryzacji produktów w sklepiku"
+    },
+    "form": {
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Przekąski",
+        "required": "Nazwa grupy produktów jest wymagana"
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Różne przekąski dostępne w sklepiku"
+      },
+      "isActive": {
+        "label": "Aktywna",
+        "description": "Udostępnij tę grupę produktów do użycia"
+      }
+    },
+    "table": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "productsCount": "Produkty",
+      "status": "Status",
+      "actions": "Akcje",
+      "viewDetails": "Szczegóły"
+    },
+    "empty": {
+      "title": "Nie znaleziono grup produktów",
+      "description": "Dodaj grupy produktów, aby kategoryzować produkty w sklepiku"
+    },
+    "list": {
+      "title": "Wszystkie grupy produktów",
+      "description": "Zarządzaj i przeglądaj wszystkie kategorie produktów"
+    },
+    "messages": {
+      "createSuccess": "Pomyślnie utworzono grupę produktów",
+      "createError": "Nie udało się utworzyć grupy produktów",
+      "fetchError": "Nie udało się pobrać grup produktów"
+    },
+    "status": {
+      "active": "Aktywna",
+      "inactive": "Nieaktywna"
+    }
+  },
+  "kids": {
+    "title": "Dzieci",
+    "description": "Zarządzaj dziećmi i ich limitami wydatków",
+    "add": {
+      "button": "Dodaj dziecko",
+      "title": "Dodaj nowe dziecko",
+      "description": "Dodaj nowe dziecko do sklepiku szkolnego i zarządzaj jego wydatkami"
+    },
+    "form": {
+      "name": {
+        "label": "Imię i nazwisko",
+        "placeholder": "Jan Kowalski",
+        "required": "Imię i nazwisko jest wymagane"
+      },
+      "monthlyLimit": {
+        "label": "Miesięczny limit wydatków",
+        "placeholder": "50.00",
+        "required": "Limit wydatków jest wymagany",
+        "invalid": "Limit wydatków musi być liczbą dodatnią"
+      },
+      "rfidTokens": {
+        "label": "Breloki RFID",
+        "placeholder": "Podaj numery breloków RFID",
+        "description": "Oddzielaj numery przecinkami"
+      },
+      "isActive": {
+        "label": "Aktywne",
+        "description": "Dopuszcza dziecko do sklepiku szkolnego"
+      },
+      "schools": {
+        "label": "Szkoły",
+        "placeholder": "Wybierz szkoły",
+        "description": "Wybierz szkoły, w których dziecko może dokonywać zakupów"
+      }
+    },
+    "table": {
+      "name": "Imię i nazwisko",
+      "monthlyLimit": "Miesięczny limit",
+      "spent": "Wydane w tym miesiącu",
+      "remaining": "Pozostało",
+      "status": "Status",
+      "actions": "Akcje",
+      "viewDetails": "Szczegóły"
+    },
+    "status": {
+      "active": "Aktywne",
+      "inactive": "Nieaktywne"
+    },
+    "messages": {
+      "createSuccess": "Dziecko dodane pomyślnie.",
+      "createError": "Nie udało się dodać dziecka. Spróbuj ponownie.",
+      "fetchError": "Nie udało się pobrać dzieci. Spróbuj ponownie.",
+      "updateSuccess": "Dziecko zaktualizowane pomyślnie.",
+      "updateError": "Nie udało się zaktualizować dziecka. Spróbuj ponownie.",
+      "deleteSuccess": "Dziecko usunięte pomyślnie.",
+      "deleteError": "Nie udało się usunąć dziecka. Spróbuj ponownie."
+    },
+    "details": {
+      "tabs": {
+        "profile": "Profil",
+        "rfidTags": "Tagi RFID",
+        "orders": "Zamówienia",
+        "schools": "Szkoły"
+      },
+      "rfidTags": "Tagi RFID:",
+      "spendingLimit": "Limit wydatków:"
+    }
+  },
+  "schools": {
+    "title": "Szkoły",
+    "description": "Zarządzaj szkołami i ich ustawieniami",
+    "add": {
+      "button": "Dodaj szkołę",
+      "title": "Dodaj nową szkołę",
+      "description": "Wprowadź dane nowej szkoły"
+    },
+    "form": {
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Nazwa szkoły",
+        "required": "Nazwa jest wymagana"
+      },
+      "address": {
+        "label": "Adres",
+        "placeholder": "Adres szkoły",
+        "required": "Adres jest wymagany"
+      },
+      "city": {
+        "label": "Miasto",
+        "placeholder": "Miasto",
+        "required": "Miasto jest wymagane"
+      },
+      "postalCode": {
+        "label": "Kod pocztowy",
+        "placeholder": "00-000",
+        "required": "Kod pocztowy jest wymagany",
+        "invalid": "Nieprawidłowy format kodu pocztowego"
+      },
+      "contactEmail": {
+        "label": "Email kontaktowy",
+        "placeholder": "email@szkola.pl",
+        "required": "Email jest wymagany",
+        "invalid": "Nieprawidłowy format adresu email"
+      },
+      "contactPhone": {
+        "label": "Telefon kontaktowy",
+        "placeholder": "+48 000 000 000",
+        "required": "Numer telefonu jest wymagany",
+        "invalid": "Nieprawidłowy format numeru telefonu"
+      },
+      "hours": {
+        "label": "Godziny otwarcia",
+        "openingHour": {
+          "label": "Godzina otwarcia",
+          "placeholder": "08:00"
+        },
+        "closingHour": {
+          "label": "Godzina zamknięcia",
+          "placeholder": "16:00"
+        }
+      },
+      "daysEnabled": {
+        "label": "Dni działania",
+        "description": "Wybierz dni, w których szkoła jest otwarta",
+        "days": {
+          "monday": "Poniedziałek",
+          "tuesday": "Wtorek",
+          "wednesday": "Środa",
+          "thursday": "Czwartek",
+          "friday": "Piątek",
+          "saturday": "Sobota",
+          "sunday": "Niedziela"
+        }
+      }
+    },
+    "table": {
+      "name": "Nazwa",
+      "city": "Miasto",
+      "contactInfo": "Kontakt",
+      "hours": "Godziny",
+      "actions": "Akcje",
+      "viewDetails": "Szczegóły"
+    },
+    "messages": {
+      "createSuccess": "Pomyślnie utworzono szkołę",
+      "createError": "Wystąpił błąd podczas tworzenia szkoły",
+      "fetchError": "Wystąpił błąd podczas pobierania szkół"
+    },
+    "details": {
+      "operatingDays": "Dni działania"
+    },
+    "status": {
+      "inactive": "Nieaktywny"
+    }
+  },
+  "debug": {
+    "title": "Debug Zamówień",
+    "description": "Twórz zamówienia w imieniu dzieci"
+  },
+  "brand": {
+    "name": "Sklepik"
+  },
+  "discounts": {
+    "title": "Promocje",
+    "description": "Zarządzaj promocjami w sklepiku",
+    "add": {
+      "button": "Dodaj promocję",
+      "title": "Dodaj nową promocję",
+      "description": "Utwórz nową promocję na produkty w sklepiku"
+    },
+    "form": {
+      "name": {
+        "label": "Nazwa",
+        "placeholder": "Promocja letnia",
+        "required": "Nazwa promocji jest wymagana"
+      },
+      "description": {
+        "label": "Opis",
+        "placeholder": "Specjalna promocja na produkty letnie"
+      },
+      "discountType": {
+        "label": "Typ promocji",
+        "options": {
+          "percentage": "Procentowa",
+          "fixed_amount": "Kwotowa",
+          "buy_x_get_y": "Kup X otrzymaj Y",
+          "bundle": "Zestaw"
+        }
+      },
+      "discountValue": {
+        "label": "Wartość promocji",
+        "placeholder": "10",
+        "required": "Wartość promocji jest wymagana",
+        "invalid": "Wartość promocji musi być liczbą dodatnią"
+      },
+      "targetType": {
+        "label": "Typ celu",
+        "options": {
+          "product": "Produkt",
+          "product_group": "Grupa produktów",
+          "order": "Zamówienie",
+          "user": "Użytkownik",
+          "kid": "Dziecko"
+        }
+      },
+      "targetId": {
+        "label": "Cel",
+        "placeholder": "Wybierz cel",
+        "all": "Wszystkie"
+      },
+      "dates": {
+        "label": "Daty ważności",
+        "start": {
+          "label": "Data rozpoczęcia",
+          "placeholder": "Wybierz datę rozpoczęcia"
+        },
+        "end": {
+          "label": "Data zakończenia",
+          "placeholder": "Wybierz datę zakończenia"
+        }
+      },
+      "times": {
+        "label": "Godziny ważności",
+        "start": {
+          "label": "Godzina rozpoczęcia",
+          "placeholder": "Wybierz godzinę rozpoczęcia"
+        },
+        "end": {
+          "label": "Godzina zakończenia",
+          "placeholder": "Wybierz godzinę zakończenia"
+        }
+      },
+      "daysEnabled": {
+        "label": "Dni ważności",
+        "description": "Wybierz dni, w których promocja jest aktywna"
+      },
+      "conditions": {
+        "label": "Warunki",
+        "minimumPurchase": {
+          "label": "Minimalna kwota zakupu",
+          "placeholder": "0,00"
+        },
+        "minimumQuantity": {
+          "label": "Minimalna ilość",
+          "placeholder": "1"
+        },
+        "buyQuantity": {
+          "label": "Ilość do zakupu",
+          "placeholder": "2"
+        },
+        "getQuantity": {
+          "label": "Ilość gratis",
+          "placeholder": "1"
+        }
+      },
+      "settings": {
+        "label": "Ustawienia",
+        "isStackable": {
+          "label": "Łączenie",
+          "description": "Może być łączona z innymi promocjami"
+        },
+        "priority": {
+          "label": "Priorytet",
+          "description": "Promocje o wyższym priorytecie są stosowane jako pierwsze",
+          "placeholder": "0"
+        },
+        "isActive": {
+          "label": "Aktywna",
+          "description": "Promocja jest obecnie aktywna"
+        }
+      }
+    },
+    "table": {
+      "name": "Nazwa",
+      "target": "Cel",
+      "value": "Wartość",
+      "dates": "Daty ważności",
+      "status": "Status",
+      "actions": "Akcje",
+      "viewDetails": "Szczegóły"
+    },
+    "status": {
+      "active": "Aktywna",
+      "inactive": "Nieaktywna",
+      "expired": "Wygasła",
+      "scheduled": "Zaplanowana"
+    },
+    "messages": {
+      "createSuccess": "Pomyślnie utworzono promocję",
+      "createError": "Nie udało się utworzyć promocji",
+      "fetchError": "Nie udało się pobrać promocji",
+      "unknown": {
+        "product": "Nieznany produkt",
+        "group": "Nieznana grupa",
+        "order": "Nieznane zamówienie",
+        "user": "Nieznany użytkownik",
+        "kid": "Nieznane dziecko"
+      }
+    }
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "description": "Zarządzaj ustawieniami i preferencjami konta",
+    "tabs": {
+      "account": "Konto",
+      "security": "Bezpieczeństwo",
+      "system": "System"
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Zarządzaj swoimi danymi osobowymi",
+      "form": {
+        "name": {
+          "label": "Imię i nazwisko",
+          "placeholder": "Twoje imię i nazwisko",
+          "required": "Imię i nazwisko jest wymagane"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "twoj.email@example.com",
+          "invalid": "Nieprawidłowy adres email"
+        }
+      },
+      "messages": {
+        "updateSuccess": "Twoje dane zostały pomyślnie zaktualizowane",
+        "updateError": "Nie udało się zaktualizować profilu"
+      }
+    },
+    "password": {
+      "title": "Hasło",
+      "description": "Zmień hasło do swojego konta",
+      "form": {
+        "currentPassword": {
+          "label": "Obecne hasło",
+          "placeholder": "Wprowadź obecne hasło",
+          "required": "Obecne hasło jest wymagane"
+        },
+        "newPassword": {
+          "label": "Nowe hasło",
+          "placeholder": "Wprowadź nowe hasło",
+          "required": "Nowe hasło jest wymagane",
+          "minLength": "Hasło musi mieć co najmniej 8 znaków",
+          "requirements": "Hasło musi zawierać wielką literę, małą literę, cyfrę i znak specjalny"
+        },
+        "confirmPassword": {
+          "label": "Potwierdź hasło",
+          "placeholder": "Potwierdź nowe hasło",
+          "required": "Proszę potwierdzić hasło",
+          "mismatch": "Hasła nie są identyczne"
+        }
+      },
+      "messages": {
+        "updateSuccess": "Twoje hasło zostało pomyślnie zmienione",
+        "updateError": "Nie udało się zmienić hasła"
+      }
+    },
+    "deleteAccount": {
+      "title": "Usuń konto",
+      "description": "Trwale usuń swoje konto i wszystkie powiązane dane",
+      "button": "Usuń konto",
+      "confirm": {
+        "title": "Czy jesteś pewien?",
+        "description": "Tej operacji nie można cofnąć. Spowoduje to trwałe usunięcie Twojego konta i wszystkich danych z naszych serwerów.",
+        "cancel": "Anuluj",
+        "confirm": "Tak, usuń moje konto"
+      },
+      "messages": {
+        "deleteSuccess": "Twoje konto zostało pomyślnie usunięte",
+        "deleteError": "Nie udało się usunąć konta"
+      }
+    }
+  },
+  "forms": {
+    "labels": {
+      "name": "Nazwa",
+      "email": "Email",
+      "password": "Hasło",
+      "rfidToken": "Brelok RFID (opcjonalnie)",
+      "monthlySpendingLimit": "Miesięczny limit wydatków (opcjonalnie)",
+      "address": "Adres",
+      "city": "Miasto",
+      "postalCode": "Kod pocztowy",
+      "contactEmail": "Email kontaktowy",
+      "contactPhone": "Telefon kontaktowy",
+      "openingHour": "Godzina otwarcia",
+      "closingHour": "Godzina zamknięcia",
+      "active": "Aktywny",
+      "price": "Cena",
+      "barcode": "Kod kreskowy",
+      "status": "Status"
+    },
+    "buttons": {
+      "addKid": "Dodaj dziecko",
+      "addSchool": "Dodaj szkołę",
+      "addTag": "Dodaj tag",
+      "createSchool": "Utwórz szkołę"
+    },
+    "dialogs": {
+      "addKid": "Dodaj nowe dziecko",
+      "addSchool": "Dodaj nową szkołę",
+      "deleteConfirmation": "Czy na pewno?"
+    }
+  },
+  "weekdays": {
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota",
+    "sunday": "Niedziela",
+    "short": {
+      "monday": "Pon",
+      "tuesday": "Wt",
+      "wednesday": "Śr",
+      "thursday": "Czw",
+      "friday": "Pt",
+      "saturday": "Sob",
+      "sunday": "Nd"
+    }
+  }
+}

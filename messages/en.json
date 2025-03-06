@@ -1,0 +1,741 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "select": "Select",
+    "search": "Search",
+    "filter": "Filter",
+    "noResults": "No results found",
+    "price": "Price",
+    "toggleMenu": "Toggle Menu",
+    "switchLanguage": "Switch language",
+    "currency": "$",
+    "required": "Required",
+    "none": "None",
+    "unknown": "Unknown",
+    "loadingData": "Loading data...",
+    "loadingKidsData": "Loading kids data...",
+    "loadingSchools": "Loading schools...",
+    "loadingOrders": "Loading orders...",
+    "loadingSchoolDetails": "Loading school details...",
+    "unauthorized": "Unauthorized",
+    "unauthorizedMessage": "You do not have permission to access this page.",
+    "accessDenied": "Access Denied",
+    "saveChanges": "Save Changes",
+    "addNew": "Add New",
+    "actions": "Actions",
+    "noDataAvailable": "No data available",
+    "noSchoolsFound": "No schools found",
+    "noKidsRegistered": "No kids registered",
+    "noRfidTags": "No RFID tags assigned",
+    "noPurchaseHistory": "No purchase history yet",
+    "noSchoolsAvailable": "No schools available. Please add schools first.",
+    "noKidsAssociated": "No kids associated with this school yet.",
+    "errorLoading": {
+      "title": "Error Loading",
+      "message": "There was a problem loading this page. Please try again later."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome to Sklepik",
+      "description": "Sign in to your account to continue",
+      "noAccount": "Don't have an account?",
+      "register": "Register",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter your email",
+          "required": "Email is required",
+          "invalid": "Invalid email address"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password",
+          "required": "Password is required"
+        },
+        "submit": "Sign in",
+        "loading": "Signing in..."
+      },
+      "messages": {
+        "success": "Successfully signed in",
+        "error": "Failed to sign in. Please check your credentials and try again.",
+        "serverError": "Server error. Please try again later or contact support."
+      }
+    },
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "profile": {
+      "title": "Profile",
+      "emailLabel": "Email address",
+      "nameLabel": "Full name"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "products": "Products",
+    "kids": "Kids",
+    "schools": "Schools",
+    "settings": "Settings",
+    "debug": "Debug"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}",
+    "overview": {
+      "parent": "Here's an overview of your account",
+      "admin": "Here's an overview of the system"
+    },
+    "loading": "Loading dashboard data...",
+    "error": {
+      "title": "Error Loading Dashboard",
+      "message": "Failed to load dashboard data. Please try again later.",
+      "navigation": "You can still navigate to other sections using the sidebar."
+    },
+    "noKids": {
+      "welcome": "Welcome, {name}",
+      "subtitle": "Let's get started with setting up your account",
+      "title": "No Kids Added Yet",
+      "message": "You haven't added any kids to your account. Start by adding your children to manage their spending at the school kiosk.",
+      "action": "Add Kids Now"
+    },
+    "stats": {
+      "kids": {
+        "title": {
+          "parent": "Your Kids",
+          "admin": "Total Kids"
+        },
+        "subtitle": {
+          "parent": "Kids registered to your account",
+          "admin": "Kids in the system"
+        }
+      },
+      "orders": {
+        "title": {
+          "parent": "Your Orders",
+          "admin": "Total Orders"
+        },
+        "subtitle": {
+          "parent": "Total orders placed by your kids",
+          "admin": "Orders in the system"
+        }
+      },
+      "spent": {
+        "title": "Total Spent",
+        "subtitle": {
+          "parent": "Total spent by your kids",
+          "admin": "Total transaction value"
+        }
+      },
+      "average": {
+        "title": "Average Order Value",
+        "subtitle": "Average value per order"
+      }
+    },
+    "recentOrders": {
+      "title": "Recent Orders",
+      "empty": {
+        "title": "No orders yet",
+        "parent": "Your kids haven't made any purchases yet.",
+        "admin": "There are no orders in the system yet."
+      },
+      "table": {
+        "orderId": "Order ID",
+        "kid": "Kid",
+        "date": "Date",
+        "total": "Total",
+        "status": "Status",
+        "unknown": "Unknown",
+        "unknownDate": "Unknown date"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "cancelled": "Cancelled"
+      }
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "description": "View and manage purchase orders",
+    "empty": {
+      "title": "No orders found",
+      "description": "There are no orders to display. Orders will appear here when purchases are made."
+    },
+    "list": {
+      "title": "Recent Orders",
+      "description": "View all orders and their details"
+    },
+    "table": {
+      "orderId": "Order ID",
+      "date": "Date",
+      "kid": "Kid",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions",
+      "viewDetails": "View Details",
+      "unknown": "Unknown"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {total}"
+    },
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "messages": {
+      "fetchError": "Failed to fetch orders. Please try again."
+    },
+    "details": {
+      "title": "Order Details",
+      "orderId": "Order ID:",
+      "date": "Date:",
+      "status": "Status:",
+      "totalAmount": "Total Amount:",
+      "kidName": "Kid Name:",
+      "parentId": "Parent ID:",
+      "rfidToken": "RFID Token:",
+      "total": "Total:"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "description": "Manage products available for purchase in the kiosk",
+    "groups": "Product Groups",
+    "add": {
+      "button": "Add Product",
+      "title": "Add New Product",
+      "description": "Create a new product to be sold in the kiosk"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Chocolate Bar",
+        "required": "Product name is required"
+      },
+      "price": {
+        "label": "Price",
+        "placeholder": "2.50",
+        "required": "Price is required",
+        "invalid": "Price must be a valid positive number"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Delicious milk chocolate bar"
+      },
+      "ingredients": {
+        "label": "Ingredients",
+        "placeholder": "Cocoa, milk, sugar"
+      },
+      "barcode": {
+        "label": "Barcode",
+        "placeholder": "123456789"
+      },
+      "group": {
+        "label": "Product Group",
+        "placeholder": "Select a group",
+        "none": "None",
+        "unknown": "Unknown Group"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "price": "Price",
+      "group": "Group",
+      "actions": "Actions",
+      "viewDetails": "View Details"
+    },
+    "messages": {
+      "createSuccess": "Product created successfully.",
+      "createError": "Failed to create product. Please try again.",
+      "fetchError": "Failed to fetch products. Please try again."
+    }
+  },
+  "productGroups": {
+    "title": "Product Groups",
+    "description": "Manage product categories for the kiosk",
+    "add": {
+      "button": "Add Product Group",
+      "title": "Add New Product Group",
+      "description": "Create a new product group to categorize items in the kiosk"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Snacks",
+        "required": "Product group name is required"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Various snack items available in the kiosk"
+      },
+      "isActive": {
+        "label": "Active",
+        "description": "Make this product group available for use"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "productsCount": "Products",
+      "status": "Status",
+      "actions": "Actions",
+      "viewDetails": "View Details"
+    },
+    "empty": {
+      "title": "No product groups found",
+      "description": "Add product groups to categorize items in the kiosk"
+    },
+    "list": {
+      "title": "All Product Groups",
+      "description": "Manage and view all product categories"
+    },
+    "messages": {
+      "createSuccess": "Product group created successfully",
+      "createError": "Failed to create product group",
+      "fetchError": "Failed to fetch product groups"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "kids": {
+    "title": "Kids",
+    "description": "Manage kids and their spending limits",
+    "add": {
+      "button": "Add Kid",
+      "title": "Add New Kid",
+      "description": "Add a new kid to manage their spending at the school kiosk"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "John Smith",
+        "required": "Kid's name is required"
+      },
+      "monthlyLimit": {
+        "label": "Monthly Spending Limit",
+        "placeholder": "50.00",
+        "required": "Monthly limit is required",
+        "invalid": "Monthly limit must be a valid positive number"
+      },
+      "rfidTokens": {
+        "label": "RFID Tokens",
+        "placeholder": "Enter RFID token numbers",
+        "description": "Separate multiple tokens with commas"
+      },
+      "isActive": {
+        "label": "Active",
+        "description": "Allow kid to make purchases"
+      },
+      "schools": {
+        "label": "Schools",
+        "placeholder": "Select schools",
+        "description": "Select schools where kid can make purchases"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "monthlyLimit": "Monthly Limit",
+      "spent": "Spent This Month",
+      "remaining": "Remaining",
+      "status": "Status",
+      "actions": "Actions",
+      "viewDetails": "View Details"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "messages": {
+      "createSuccess": "Kid added successfully.",
+      "createError": "Failed to add kid. Please try again.",
+      "fetchError": "Failed to fetch kids. Please try again.",
+      "updateSuccess": "Kid updated successfully.",
+      "updateError": "Failed to update kid. Please try again.",
+      "deleteSuccess": "Kid deleted successfully.",
+      "deleteError": "Failed to delete kid. Please try again."
+    },
+    "details": {
+      "tabs": {
+        "profile": "Profile",
+        "rfidTags": "RFID Tags",
+        "orders": "Orders",
+        "schools": "Schools"
+      },
+      "rfidTags": "RFID Tags:",
+      "spendingLimit": "Spending Limit:"
+    }
+  },
+  "schools": {
+    "title": "Schools",
+    "description": "Manage schools and their settings",
+    "add": {
+      "button": "Add School",
+      "title": "Add New School",
+      "description": "Add a new school to the system"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Primary School No. 1",
+        "required": "School name is required"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "123 School Street",
+        "required": "Address is required"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "New York",
+        "required": "City is required"
+      },
+      "postalCode": {
+        "label": "Postal Code",
+        "placeholder": "12-345",
+        "required": "Postal code is required",
+        "invalid": "Invalid postal code format"
+      },
+      "contactEmail": {
+        "label": "Contact Email",
+        "placeholder": "school@example.com",
+        "required": "Contact email is required",
+        "invalid": "Invalid email format"
+      },
+      "contactPhone": {
+        "label": "Contact Phone",
+        "placeholder": "+48 123 456 789",
+        "required": "Contact phone is required",
+        "invalid": "Invalid phone number format"
+      },
+      "hours": {
+        "label": "Opening Hours",
+        "openingHour": {
+          "label": "Opening Hour",
+          "placeholder": "08:00"
+        },
+        "closingHour": {
+          "label": "Closing Hour",
+          "placeholder": "16:00"
+        }
+      },
+      "daysEnabled": {
+        "label": "Operating Days",
+        "description": "Select days when the kiosk is open",
+        "days": {
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thursday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        }
+      }
+    },
+    "table": {
+      "name": "Name",
+      "city": "City",
+      "contactInfo": "Contact Info",
+      "hours": "Hours",
+      "actions": "Actions",
+      "viewDetails": "View Details"
+    },
+    "messages": {
+      "createSuccess": "School added successfully.",
+      "createError": "Failed to add school. Please try again.",
+      "fetchError": "Failed to fetch schools. Please try again.",
+      "updateSuccess": "School updated successfully.",
+      "updateError": "Failed to update school. Please try again.",
+      "deleteSuccess": "School deleted successfully.",
+      "deleteError": "Failed to delete school. Please try again."
+    },
+    "details": {
+      "operatingDays": "Operating Days"
+    },
+    "status": {
+      "inactive": "Inactive"
+    }
+  },
+  "debug": {
+    "title": "Debug Orders",
+    "description": "Create orders on behalf of kids"
+  },
+  "brand": {
+    "name": "Sklepik"
+  },
+  "discounts": {
+    "title": "Discounts",
+    "description": "Manage promotional discounts for the kiosk",
+    "add": {
+      "button": "Add Discount",
+      "title": "Add New Discount",
+      "description": "Create a new discount promotion for products in the kiosk"
+    },
+    "form": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Summer Sale",
+        "required": "Discount name is required"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Special discount for summer items"
+      },
+      "discountType": {
+        "label": "Discount Type",
+        "options": {
+          "percentage": "Percentage",
+          "fixed_amount": "Fixed Amount",
+          "buy_x_get_y": "Buy X Get Y Free",
+          "bundle": "Bundle"
+        }
+      },
+      "discountValue": {
+        "label": "Discount Value",
+        "placeholder": "10",
+        "required": "Discount value is required",
+        "invalid": "Discount value must be a positive number"
+      },
+      "targetType": {
+        "label": "Target Type",
+        "options": {
+          "product": "Product",
+          "product_group": "Product Group",
+          "order": "Order",
+          "user": "User",
+          "kid": "Kid"
+        }
+      },
+      "targetId": {
+        "label": "Target",
+        "placeholder": "Select target",
+        "all": "All"
+      },
+      "dates": {
+        "label": "Valid Dates",
+        "start": {
+          "label": "Start Date",
+          "placeholder": "Select start date"
+        },
+        "end": {
+          "label": "End Date",
+          "placeholder": "Select end date"
+        }
+      },
+      "times": {
+        "label": "Valid Times",
+        "start": {
+          "label": "Start Time",
+          "placeholder": "Select start time"
+        },
+        "end": {
+          "label": "End Time",
+          "placeholder": "Select end time"
+        }
+      },
+      "daysEnabled": {
+        "label": "Valid Days",
+        "description": "Select days when the discount is active"
+      },
+      "conditions": {
+        "label": "Conditions",
+        "minimumPurchase": {
+          "label": "Minimum Purchase Amount",
+          "placeholder": "0.00"
+        },
+        "minimumQuantity": {
+          "label": "Minimum Quantity",
+          "placeholder": "1"
+        },
+        "buyQuantity": {
+          "label": "Buy Quantity",
+          "placeholder": "2"
+        },
+        "getQuantity": {
+          "label": "Get Free Quantity",
+          "placeholder": "1"
+        }
+      },
+      "settings": {
+        "label": "Settings",
+        "isStackable": {
+          "label": "Stackable",
+          "description": "Can be combined with other discounts"
+        },
+        "priority": {
+          "label": "Priority",
+          "description": "Higher priority discounts are applied first",
+          "placeholder": "0"
+        },
+        "isActive": {
+          "label": "Active",
+          "description": "Discount is currently active"
+        }
+      }
+    },
+    "table": {
+      "name": "Name",
+      "target": "Target",
+      "value": "Value",
+      "dates": "Valid Dates",
+      "status": "Status",
+      "actions": "Actions",
+      "viewDetails": "View Details"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "expired": "Expired",
+      "scheduled": "Scheduled"
+    },
+    "messages": {
+      "createSuccess": "Discount created successfully",
+      "createError": "Failed to create discount",
+      "fetchError": "Failed to fetch discounts",
+      "unknown": {
+        "product": "Unknown Product",
+        "group": "Unknown Group",
+        "order": "Unknown Order",
+        "user": "Unknown User",
+        "kid": "Unknown Kid"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences",
+    "tabs": {
+      "account": "Account",
+      "security": "Security",
+      "system": "System"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Manage your personal information",
+      "form": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Your name",
+          "required": "Name is required"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "your.email@example.com",
+          "invalid": "Invalid email address"
+        }
+      },
+      "messages": {
+        "updateSuccess": "Your profile information has been updated successfully",
+        "updateError": "Failed to update profile"
+      }
+    },
+    "password": {
+      "title": "Password",
+      "description": "Change your account password",
+      "form": {
+        "currentPassword": {
+          "label": "Current Password",
+          "placeholder": "Enter current password",
+          "required": "Current password is required"
+        },
+        "newPassword": {
+          "label": "New Password",
+          "placeholder": "Enter new password",
+          "required": "New password is required",
+          "minLength": "Password must be at least 8 characters",
+          "requirements": "Password must include uppercase, lowercase, number, and special character"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "Confirm new password",
+          "required": "Please confirm your password",
+          "mismatch": "Passwords don't match"
+        }
+      },
+      "messages": {
+        "updateSuccess": "Your password has been changed successfully",
+        "updateError": "Failed to update password"
+      }
+    },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "description": "Permanently delete your account and all associated data",
+      "button": "Delete Account",
+      "confirm": {
+        "title": "Are you sure?",
+        "description": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+        "cancel": "Cancel",
+        "confirm": "Yes, delete my account"
+      },
+      "messages": {
+        "deleteSuccess": "Your account has been successfully deleted",
+        "deleteError": "Failed to delete account"
+      }
+    }
+  },
+  "forms": {
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "rfidToken": "RFID Token (optional)",
+      "monthlySpendingLimit": "Monthly Spending Limit (optional)",
+      "address": "Address",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "contactEmail": "Contact Email",
+      "contactPhone": "Contact Phone",
+      "openingHour": "Opening Hour",
+      "closingHour": "Closing Hour",
+      "active": "Active",
+      "price": "Price",
+      "barcode": "Barcode",
+      "status": "Status"
+    },
+    "buttons": {
+      "addKid": "Add Kid",
+      "addSchool": "Add School",
+      "addTag": "Add Tag",
+      "createSchool": "Create School"
+    },
+    "dialogs": {
+      "addKid": "Add a new kid",
+      "addSchool": "Add New School",
+      "deleteConfirmation": "Are you absolutely sure?"
+    }
+  },
+  "weekdays": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "short": {
+      "monday": "Mon",
+      "tuesday": "Tue",
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday": "Sun"
+    }
+  }
+}

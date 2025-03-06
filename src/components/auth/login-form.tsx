@@ -17,19 +17,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-
-const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(1, { message: 'Password is required' }),
-});
+import { useTranslations } from 'next-intl';
 
 export function LoginForm() {
   const { login } = useAuth();
   const { toast } = useToast();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const formSchema = z.object({
+    email: z.string().email({ message: t('auth.login.form.email.invalid') }),
+    password: z.string().min(1, { message: t('auth.login.form.password.required') }),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
@@ -37,22 +41,40 @@ export function LoginForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormValues) {
     setError(null);
     setIsLoading(true);
 
     try {
       await login(values.email, values.password);
       toast({
-        title: 'Success',
-        description: 'You have been logged in successfully.',
+        title: t('common.success'),
+        description: t('auth.login.messages.success'),
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login error', error);
-      setError(
-        error.response?.data?.message ||
-        'An error occurred during login. Please try again.'
-      );
+
+      // Extract a user-friendly error message
+      let errorMessage: string;
+      if (error instanceof Error) {
+        // Check for specific error messages we want to show directly
+        if (error.message.includes('Invalid response format') ||
+            error.message.includes('No data received')) {
+          errorMessage = t('auth.login.messages.serverError');
+        } else {
+          errorMessage = error.message;
+        }
+      } else {
+        errorMessage = t('auth.login.messages.error');
+      }
+
+      setError(errorMessage);
+
+      toast({
+        title: t('common.error'),
+        description: errorMessage,
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -60,11 +82,6 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">Welcome back</h1>
-        <p className="text-gray-500">Enter your credentials to sign in</p>
-      </div>
-
       {error && (
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
@@ -78,9 +95,9 @@ export function LoginForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('auth.login.form.email.label')}</FormLabel>
                 <FormControl>
-                  <Input placeholder="johndoe@example.com" {...field} />
+                  <Input placeholder={t('auth.login.form.email.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,9 +109,9 @@ export function LoginForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('auth.login.form.password.label')}</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <Input type="password" placeholder={t('auth.login.form.password.placeholder')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -102,7 +119,7 @@ export function LoginForm() {
           />
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? t('auth.login.form.loading') : t('auth.login.form.submit')}
           </Button>
         </form>
       </Form>

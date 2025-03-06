@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +13,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useTranslations } from 'next-intl';
 
 export function Navbar() {
   const { user, logout } = useAuth();
+  const t = useTranslations();
+  const pathname = usePathname();
+
+  // Extract the current locale from the pathname
+  const getCurrentLocale = (): string => {
+    const pathParts = pathname?.split('/') || [];
+    return pathParts.length > 1 ? pathParts[1] : 'pl'; // Default to 'pl' if no locale found
+  };
+
+  const currentLocale = getCurrentLocale();
 
   return (
     <header className="sticky top-0 z-10 w-full border-b bg-white">
@@ -37,12 +50,12 @@ export function Navbar() {
               <line x1="4" x2="20" y1="6" y2="6" />
               <line x1="4" x2="20" y1="18" y2="18" />
             </svg>
-            <span className="sr-only">Toggle Menu</span>
+            <span className="sr-only">{t('common.toggleMenu')}</span>
           </Button>
         </div>
 
         <div className="flex md:hidden">
-          <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+          <Link href={`/${currentLocale}/dashboard`} className="flex items-center gap-2 font-semibold">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -60,13 +73,14 @@ export function Navbar() {
               <path d="M9 14v2" />
               <path d="M15 14v2" />
             </svg>
-            <span className="text-xl">Sklepik</span>
+            <span className="text-xl">{t('brand.name')}</span>
           </Link>
         </div>
 
         <div className="flex-1 md:ml-auto"></div>
 
         <div className="flex items-center gap-4">
+          <LanguageSwitcher />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -87,23 +101,23 @@ export function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href={`/${currentLocale}/dashboard`}>{t('navigation.dashboard')}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/settings">Settings</Link>
+                  <Link href={`/${currentLocale}/settings`}>{t('navigation.settings')}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer"
                   onClick={() => logout()}
                 >
-                  Log out
+                  {t('auth.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <Button asChild variant="default">
-              <Link href="/login">Login</Link>
+              <Link href={`/${currentLocale}/login`}>{t('auth.login.title')}</Link>
             </Button>
           )}
         </div>

@@ -74,6 +74,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const router = useRouter();
   const pathname = useIsomorphicPathname();
 
+  // Helper function to get the current locale from the pathname
+  const getCurrentLocale = (): string => {
+    const currentPathname = pathname || '';
+    const localeMatch = currentPathname.match(/^\/([^\/]+)/);
+    return localeMatch ? localeMatch[1] : 'pl'; // Default to 'pl' if no locale found
+  };
+
   // Function to check if token is valid
   const isTokenValid = useCallback((token: string) => {
     try {
@@ -166,25 +173,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const response = await authApi.login(email, password) as any;
 
-      if (response && response.data) {
-        const { user, accessToken, refreshToken } = response.data;
+      // Check if response has data and it's not an empty array
+      if (response && response.data &&
+          (Array.isArray(response.data) ? response.data.length > 0 : true)) {
 
-        // Store cleaned tokens without 'Bearer ' prefix
-        const cleanAccessToken = accessToken.replace('Bearer ', '');
-        const cleanRefreshToken = refreshToken.replace('Bearer ', '');
+        // Handle case when data is an array (take first item) or an object
+        const responseData = Array.isArray(response.data) ? response.data[0] : response.data;
 
-        saveToken(cleanAccessToken, cleanRefreshToken);
+        // Check if we have the expected properties
+        if (responseData && responseData.user && responseData.accessToken && responseData.refreshToken) {
+          const { user, accessToken, refreshToken } = responseData;
 
-        // Set user in state
-        setUser(user);
+          // Store cleaned tokens without 'Bearer ' prefix
+          const cleanAccessToken = accessToken.replace('Bearer ', '');
+          const cleanRefreshToken = refreshToken.replace('Bearer ', '');
 
-        // Redirect based on role with a slight delay to ensure state updates
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 100);
+          saveToken(cleanAccessToken, cleanRefreshToken);
+
+          // Set user in state
+          setUser(user);
+
+          // Get the current locale
+          const currentLocale = getCurrentLocale();
+
+          // Redirect based on role with a slight delay to ensure state updates
+          setTimeout(() => {
+            if (router && router.push) {
+              router.push(`/${currentLocale}/dashboard`);
+            } else {
+              // Fallback for when router is not available
+              window.location.href = `/${currentLocale}/dashboard`;
+            }
+          }, 100);
+        } else {
+          // Handle case when response doesn't have expected properties
+          throw new Error('Invalid response format from server. Missing user or token data.');
+        }
+      } else {
+        // Handle case when response.data is empty or undefined
+        throw new Error('No data received from server.');
       }
     } catch (error) {
-      setAuthError('Login failed');
+      console.error('Login error:', error);
+      setAuthError(error instanceof Error ? error.message : 'Login failed');
       throw error;
     } finally {
       setIsLoading(false);
@@ -194,7 +225,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = () => {
     clearTokens();
     setUser(null);
-    router.push('/login');
+
+    // Get the current locale
+    const currentLocale = getCurrentLocale();
+
+    if (router && router.push) {
+      router.push(`/${currentLocale}/login`);
+    } else {
+      // Fallback for when router is not available
+      window.location.href = `/${currentLocale}/login`;
+    }
   };
 
   const hasRole = (roles: UserRole[]) => {
