@@ -45,12 +45,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { withAuth } from '@/lib/auth';
 import { useAuth } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
-import { kidsApi, ordersApi, schoolsApi } from '@/lib/api';
+import { kidsApi, ordersApi, schoolsApi, reportingApi } from '@/lib/api';
 import { extractResponseData, handleApiError } from '@/lib/response-utils';
-import { Kid, Order, UserRole, School } from '@/types';
+import { Kid, Order, UserRole, School, KidMonthlySpending } from '@/types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { BudgetProgress } from '@/components/ui/budget-progress';
+import { SpendingChart } from '@/components/ui/spending-chart';
 
 // Error boundary component
 class KidDetailErrorBoundary extends React.Component {
@@ -90,15 +92,13 @@ class KidDetailErrorBoundary extends React.Component {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  rfid_token: z.string().optional(),
-  monthly_spending_limit: z.string()
-    .refine(
-      (val) => !val || !isNaN(Number(val)),
-      { message: 'Must be a valid number' }
-    )
-    .transform((val) => val ? Number(val) : undefined),
+  name: z.string().min(2, {
+    message: t('Name must be at least 2 characters.'),
+  }),
   is_active: z.boolean().default(true),
+  monthly_spending_limit: z.coerce.number().min(0, {
+    message: t('Monthly spending limit must be a positive number.'),
+  }),
 });
 
 function KidDetailPage() {
@@ -109,76 +109,59 @@ function KidDetailPage() {
 
   const { toast } = useToast();
   const { user } = useAuth();
-  const [kid, setKid] = useState<Kid | null>(null);
+  const [kidData, setKidData] = useState<Kid | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isOrdersLoading, setIsOrdersLoading] = useState(true);
-  const [rfidTokens, setRfidTokens] = useState<string[]>([]);
-  const [newRfidToken, setNewRfidToken] = useState('');
-  const [loadError, setLoadError] = useState(false);
-  const [dataFetched, setDataFetched] = useState(false);
   const [schools, setSchools] = useState<School[]>([]);
-  const [availableSchools, setAvailableSchools] = useState<School[]>([]);
-  const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
-  const [isLoadingSchools, setIsLoadingSchools] = useState(false);
+  const [selectedSchools, setSelectedSchools] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [newRfidToken, setNewRfidToken] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [monthlySpending, setMonthlySpending] = useState<KidMonthlySpending | null>(null);
+  const [spendingHistory, setSpendingHistory] = useState<{label: string, value: number}[]>([]);
+  const [isLoadingSpending, setIsLoadingSpending] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      rfid_token: '',
-      monthly_spending_limit: '',
-      is_active: true,
+      name: kidData?.name || '',
+      is_active: kidData?.is_active ?? true,
+      monthly_spending_limit: kidData?.monthly_spending_limit || 0,
     },
   });
 
   // Fetch data function
   const fetchData = useCallback(async () => {
-    if (!kidId || loadError || dataFetched) return;
+    if (!kidId || error || isLoading) return;
 
     try {
       setIsLoading(true);
-      setIsOrdersLoading(true);
+      setError(null);
 
       // Fetch kid details
-      const response = await kidsApi.getKidById(kidId);
+      const response = await kidsApi.getKid(kidId);
       if (response.success) {
         // Extract kid data using the utility function
         const kidData = extractResponseData<Kid>(response);
+        setKidData(kidData);
 
-        // If user is a parent, strip out RFID information
-        if (user?.role === UserRole.PARENT) {
-          kidData.rfid_token = []; // Remove RFID token data for parents
-        }
+        // Fetch orders
+        const ordersResponse = await ordersApi.getKidOrders(kidId);
+        const ordersData = extractResponseData<Order[]>(ordersResponse);
+        setOrders(ordersData);
 
-        setKid(kidData);
-        setRfidTokens(user?.role === UserRole.PARENT ? [] : (kidData.rfid_token || []));
+        fetchSchools();
 
-        form.reset({
-          name: kidData.name,
-          rfid_token: '',
-          monthly_spending_limit: kidData.monthly_spending_limit ?
-            String(kidData.monthly_spending_limit) : '',
-          is_active: kidData.is_active,
-        });
+        // Fetch monthly spending data
+        await fetchMonthlySpending();
       } else {
         notFound();
       }
-
-      // Fetch orders
-      const ordersResponse = await ordersApi.getKidOrders(kidId);
-
-      // Extract orders data using the utility function
-      const ordersData = extractResponseData<Order[]>(ordersResponse);
-      setOrders(ordersData);
-
-      fetchSchools();
-
-      setDataFetched(true);
     } catch (error) {
       console.error('Error fetching kid data:', error);
       const errorInfo = handleApiError(error);
-      setLoadError(true);
+      setError(errorInfo.message || 'Failed to fetch kid details. Please try again.');
       toast({
         title: 'Error',
         description: errorInfo.message || 'Failed to fetch kid details. Please try again.',
@@ -186,47 +169,33 @@ function KidDetailPage() {
       });
     } finally {
       setIsLoading(false);
-      setIsOrdersLoading(false);
     }
-  }, [kidId, form, user?.role, toast, loadError, dataFetched]);
+  }, [kidId, form, user?.role, toast, error, isLoading]);
 
   // Only fetch data once
   useEffect(() => {
-    if (kidId && !dataFetched && !loadError) {
+    if (kidId && !error && !isLoading) {
       fetchData();
     }
-  }, [kidId, fetchData, dataFetched, loadError]);
+  }, [kidId, fetchData, error, isLoading]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!kid) return;
+    if (!kidId) return;
 
     try {
-      const updatedData: Partial<Kid> = {
+      setIsSaving(true);
+      const response = await kidsApi.updateKid(kidId, {
         name: values.name,
-        monthly_spending_limit: values.monthly_spending_limit,
         is_active: values.is_active,
-      };
+        monthly_spending_limit: values.monthly_spending_limit,
+      });
 
-      const response = await kidsApi.updateKid(kid.id, updatedData);
-
-      if (response.success) {
-        // Extract the updated kid data
-        let updatedKid = extractResponseData<Kid>(response);
-
-        // If user is a parent, strip out RFID information from response
-        if (user?.role === UserRole.PARENT) {
-          updatedKid = {
-            ...updatedKid,
-            rfid_token: []
-          };
-        }
-
-        setKid(updatedKid);
-        toast({
-          title: 'Success',
-          description: response.message || 'Kid updated successfully.',
-        });
-      }
+      const updatedKid = extractResponseData<Kid>(response);
+      setKidData(updatedKid);
+      toast({
+        title: 'Success',
+        description: response.message || 'Kid updated successfully.',
+      });
     } catch (error) {
       console.error('Error updating kid:', error);
       const errorInfo = handleApiError(error);
@@ -235,20 +204,25 @@ function KidDetailPage() {
         description: errorInfo.message || 'Failed to update kid. Please try again.',
         variant: 'destructive',
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
   const handleAddRfidToken = async () => {
-    if (!kid || !newRfidToken.trim()) return;
+    if (!kidData || !newRfidToken.trim()) return;
 
     try {
-      const updatedTokens = [...rfidTokens, newRfidToken];
-      const response = await kidsApi.updateKid(kid.id, {
+      const updatedTokens = [...(kidData.rfid_token || []), newRfidToken];
+      const response = await kidsApi.updateKid(kidData.id, {
         rfid_token: updatedTokens
       });
 
       if (response.success) {
-        setRfidTokens(updatedTokens);
+        setKidData(prev => ({
+          ...prev,
+          rfid_token: updatedTokens
+        }));
         setNewRfidToken('');
         toast({
           title: 'Success',
@@ -267,16 +241,19 @@ function KidDetailPage() {
   };
 
   const handleRemoveRfidToken = async (token: string) => {
-    if (!kid) return;
+    if (!kidData) return;
 
     try {
-      const updatedTokens = rfidTokens.filter(t => t !== token);
-      const response = await kidsApi.updateKid(kid.id, {
+      const updatedTokens = kidData.rfid_token?.filter(t => t !== token) || [];
+      const response = await kidsApi.updateKid(kidData.id, {
         rfid_token: updatedTokens
       });
 
       if (response.success) {
-        setRfidTokens(updatedTokens);
+        setKidData(prev => ({
+          ...prev,
+          rfid_token: updatedTokens
+        }));
         toast({
           title: 'Success',
           description: response.message || 'RFID token removed successfully.',
@@ -294,10 +271,10 @@ function KidDetailPage() {
   };
 
   const handleDeleteKid = async () => {
-    if (!kid) return;
+    if (!kidData) return;
 
     try {
-      const response = await kidsApi.deleteKid(kid.id);
+      const response = await kidsApi.deleteKid(kidData.id);
       if (response.success) {
         toast({
           title: 'Success',
@@ -317,7 +294,7 @@ function KidDetailPage() {
   };
 
   const fetchSchools = async () => {
-    setIsLoadingSchools(true);
+    setIsLoading(true);
     try {
       // Fetch schools associated with this kid
       const kidSchoolsResponse = await kidsApi.getKidById(kidId, {includeSchools: true});
@@ -326,14 +303,6 @@ function KidDetailPage() {
         const kidData = extractResponseData<Kid & { schools: School[] }>(kidSchoolsResponse);
         setSchools(kidData.schools || []);
         setSelectedSchools((kidData.schools || []).map(school => school.id));
-      }
-
-      // Fetch all available schools
-      const allSchoolsResponse = await schoolsApi.getSchools();
-      if (allSchoolsResponse.success) {
-        // Extract schools data from the response
-        const schoolsData = extractResponseData<{ schools: School[] }>(allSchoolsResponse);
-        setAvailableSchools(schoolsData.schools || []);
       }
     } catch (error) {
       console.error('Error fetching schools:', error);
@@ -344,21 +313,20 @@ function KidDetailPage() {
         variant: 'destructive',
       });
     } finally {
-      setIsLoadingSchools(false);
+      setIsLoading(false);
     }
   };
 
   const handleSchoolSelectionChange = (schoolId: string, isChecked: boolean) => {
-    setSelectedSchools(prev =>
-      isChecked
-        ? [...prev, schoolId]
-        : prev.filter(id => id !== schoolId)
-    );
+    setSelectedSchools(prev => ({
+      ...prev,
+      [schoolId]: isChecked
+    }));
   };
 
   const handleSaveSchools = async () => {
     try {
-      const response = await kidsApi.updateKidSchools(kidId, selectedSchools);
+      const response = await kidsApi.updateKidSchools(kidId, Object.keys(selectedSchools));
       if (response.success) {
         // Extract schools data from the response
         const updatedSchools = extractResponseData<School[]>(response);
@@ -385,11 +353,54 @@ function KidDetailPage() {
     }
   };
 
-  if (loadError) {
+  // Add function to fetch monthly spending data
+  const fetchMonthlySpending = useCallback(async () => {
+    if (!kidId) return;
+
+    try {
+      setIsLoadingSpending(true);
+      const response = await kidsApi.getKidMonthlySpending(kidId);
+      const spendingData = extractResponseData<KidMonthlySpending>(response);
+      setMonthlySpending(spendingData);
+
+      // Also fetch remaining budget
+      const budgetResponse = await kidsApi.getRemainingBudget(kidId);
+      const budgetData = extractResponseData<{ remaining: number, limit: number, spent: number }>(budgetResponse);
+
+      // Update kid data with current spending information
+      if (kidData) {
+        setKidData(prev => ({
+          ...prev,
+          remaining_budget: budgetData.remaining,
+          current_month_spending: budgetData.spent
+        }));
+      }
+
+      // Fetch spending history for the last 6 months
+      const historyResponse = await reportingApi.getKidSpendingHistory(kidId, 'monthly');
+      const historyData = extractResponseData<SpendingReport>(historyResponse);
+
+      // Transform data for chart
+      if (historyData.breakdown_by_product) {
+        const chartData = Object.entries(historyData.breakdown_by_product).map(([label, value]) => ({
+          label,
+          value
+        }));
+        setSpendingHistory(chartData);
+      }
+    } catch (error) {
+      console.error('Error fetching monthly spending:', error);
+      handleApiError(error, toast);
+    } finally {
+      setIsLoadingSpending(false);
+    }
+  }, [kidId, kidData, toast]);
+
+  if (error) {
     return (
       <div className="p-6 bg-red-50 border border-red-200 rounded-lg">
         <h2 className="text-xl font-semibold text-red-700">Error Loading Kid Details</h2>
-        <p className="mt-2 text-red-600">There was a problem loading this page. Please try again later.</p>
+        <p className="mt-2 text-red-600">{error}</p>
         <Button
           className="mt-4 bg-red-600 hover:bg-red-700"
           onClick={() => {
@@ -406,18 +417,18 @@ function KidDetailPage() {
     return <div className="flex justify-center items-center min-h-[60vh]">Loading...</div>;
   }
 
-  if (!kid) {
+  if (!kidData) {
     return notFound();
   }
 
   // Determine which tabs should be visible based on user role
-  const defaultTab = "profile";
+  const defaultTab = "details";
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{kid.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{kidData.name}</h1>
           <p className="text-muted-foreground">
             Manage your child's account and view purchase history
           </p>
@@ -451,17 +462,14 @@ function KidDetailPage() {
 
       <Tabs defaultValue={defaultTab}>
         <TabsList>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          {/* RFID tab only for admin/staff users */}
-          {(user?.role === UserRole.ADMIN || user?.role === UserRole.STAFF) && (
-            <TabsTrigger value="rfid">RFID Tags</TabsTrigger>
-          )}
-          <TabsTrigger value="orders">Orders</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="spending">Spending</TabsTrigger>
           <TabsTrigger value="schools">Schools</TabsTrigger>
+          <TabsTrigger value="orders">Orders</TabsTrigger>
         </TabsList>
 
-        {/* Profile Tab */}
-        <TabsContent value="profile" className="space-y-4">
+        {/* Details Tab */}
+        <TabsContent value="details" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Profile</CardTitle>
@@ -492,7 +500,13 @@ function KidDetailPage() {
                       <FormItem>
                         <FormLabel>Monthly Spending Limit</FormLabel>
                         <FormControl>
-                          <Input placeholder="50.00" {...field} value={field.value || ''} />
+                          <Input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            {...field}
+                          />
                         </FormControl>
                         <FormDescription>
                           Maximum amount your child can spend each month
@@ -523,74 +537,196 @@ function KidDetailPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Save Changes</Button>
+                  <Button type="submit" disabled={isSaving}>
+                    {isSaving ? 'Saving...' : 'Save Changes'}
+                  </Button>
                 </form>
               </Form>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* RFID Tags Tab - Only render for admin/staff */}
-        {(user?.role === UserRole.ADMIN || user?.role === UserRole.STAFF) && (
-          <TabsContent value="rfid" className="space-y-4">
+        {/* New Spending Tab */}
+        <TabsContent value="spending">
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Current Month Spending */}
             <Card>
               <CardHeader>
-                <CardTitle>RFID Tags</CardTitle>
+                <CardTitle>Current Month Spending</CardTitle>
                 <CardDescription>
-                  Manage RFID tags used for authentication at the kiosk
+                  Spending for the current month
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Enter RFID tag number"
-                      value={newRfidToken}
-                      onChange={(e) => setNewRfidToken(e.target.value)}
-                    />
-                    <Button onClick={handleAddRfidToken}>Add Tag</Button>
+                {isLoadingSpending ? (
+                  <div className="flex justify-center py-4">
+                    <p>Loading spending data...</p>
                   </div>
+                ) : kidData ? (
+                  <div className="space-y-6">
+                    <BudgetProgress
+                      spent={kidData.current_month_spending || 0}
+                      limit={kidData.monthly_spending_limit || 0}
+                    />
 
-                  {rfidTokens.length === 0 ? (
-                    <div className="text-muted-foreground text-sm">No RFID tags assigned</div>
-                  ) : (
-                    <div className="space-y-2">
-                      {rfidTokens.map((token) => (
-                        <div key={token} className="flex justify-between items-center p-2 border rounded">
-                          <span>{token}</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRemoveRfidToken(token)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="h-4 w-4"
-                            >
-                              <path d="M18 6 6 18" />
-                              <path d="m6 6 12 12" />
-                            </svg>
-                            <span className="sr-only">Remove</span>
-                          </Button>
+                    <div className="pt-4 border-t">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Spent</p>
+                          <p className="text-2xl font-bold">
+                            {new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })
+                              .format(kidData.current_month_spending || 0)}
+                          </p>
                         </div>
-                      ))}
+                        <div>
+                          <p className="text-sm text-gray-500">Remaining</p>
+                          <p className="text-2xl font-bold">
+                            {new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })
+                              .format(kidData.remaining_budget || 0)}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <p>No spending data available</p>
+                )}
               </CardContent>
             </Card>
-          </TabsContent>
-        )}
 
-        {/* Orders Tab */}
+            {/* Spending History */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Spending History</CardTitle>
+                <CardDescription>
+                  Recent spending history
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoadingSpending ? (
+                  <div className="flex justify-center py-4">
+                    <p>Loading spending history...</p>
+                  </div>
+                ) : spendingHistory.length > 0 ? (
+                  <SpendingChart
+                    data={spendingHistory}
+                    title="Spending by Product"
+                    height={200}
+                  />
+                ) : (
+                  <p>No spending history available</p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Recent Transactions */}
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Recent Transactions</CardTitle>
+                <CardDescription>
+                  Most recent purchases
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className="flex justify-center py-4">
+                    <p>Loading transactions...</p>
+                  </div>
+                ) : orders.length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-2">Date</th>
+                          <th className="text-left py-2">Order ID</th>
+                          <th className="text-left py-2">Items</th>
+                          <th className="text-right py-2">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.slice(0, 5).map((order) => (
+                          <tr key={order.id} className="border-b">
+                            <td className="py-2">
+                              {new Date(order.created_at || '').toLocaleDateString()}
+                            </td>
+                            <td className="py-2">{order.id.substring(0, 8)}</td>
+                            <td className="py-2">{order.items?.length || 0}</td>
+                            <td className="py-2 text-right">
+                              {new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' })
+                                .format(order.total_amount || 0)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p>No transactions available</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="schools" className="mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>School Associations</CardTitle>
+              <CardDescription>
+                Manage which schools this kid can make purchases at
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="text-center py-4">Loading schools...</div>
+              ) : schools.length === 0 ? (
+                <div className="text-center py-4">
+                  <p>No schools available. Please add schools first.</p>
+                  {(user?.role === UserRole.ADMIN || user?.role === UserRole.STAFF) && (
+                    <Button
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => router.push('/schools')}
+                    >
+                      Manage Schools
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    {schools.map(school => (
+                      <div key={school.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`school-${school.id}`}
+                          checked={selectedSchools[school.id]}
+                          onCheckedChange={(checked) =>
+                            handleSchoolSelectionChange(school.id, checked as boolean)
+                          }
+                        />
+                        <label
+                          htmlFor={`school-${school.id}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {school.name}
+                          {!school.is_active && (
+                            <span className="ml-2 text-xs text-gray-500 italic">(Inactive)</span>
+                          )}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-end mt-6">
+                    <Button onClick={handleSaveSchools}>
+                      Save School Associations
+                    </Button>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="orders" className="space-y-4">
           <Card>
             <CardHeader>
@@ -600,7 +736,7 @@ function KidDetailPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {isOrdersLoading ? (
+              {isLoading ? (
                 <div>Loading orders...</div>
               ) : orders.length === 0 ? (
                 <div className="text-muted-foreground text-sm">No purchase history yet</div>
@@ -645,65 +781,6 @@ function KidDetailPage() {
                     </table>
                   </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="schools" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>School Associations</CardTitle>
-              <CardDescription>
-                Manage which schools this kid can make purchases at
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoadingSchools ? (
-                <div className="text-center py-4">Loading schools...</div>
-              ) : availableSchools.length === 0 ? (
-                <div className="text-center py-4">
-                  <p>No schools available. Please add schools first.</p>
-                  {(user?.role === UserRole.ADMIN || user?.role === UserRole.STAFF) && (
-                    <Button
-                      variant="outline"
-                      className="mt-2"
-                      onClick={() => router.push('/schools')}
-                    >
-                      Manage Schools
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <div className="space-y-4">
-                    {availableSchools.map(school => (
-                      <div key={school.id} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`school-${school.id}`}
-                          checked={selectedSchools.includes(school.id)}
-                          onCheckedChange={(checked) =>
-                            handleSchoolSelectionChange(school.id, checked as boolean)
-                          }
-                        />
-                        <label
-                          htmlFor={`school-${school.id}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {school.name}
-                          {!school.is_active && (
-                            <span className="ml-2 text-xs text-gray-500 italic">(Inactive)</span>
-                          )}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-end mt-6">
-                    <Button onClick={handleSaveSchools}>
-                      Save School Associations
-                    </Button>
-                  </div>
-                </>
               )}
             </CardContent>
           </Card>

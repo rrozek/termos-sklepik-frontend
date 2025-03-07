@@ -88,7 +88,9 @@
     "kids": "Kids",
     "schools": "Schools",
     "settings": "Settings",
-    "debug": "Debug"
+    "debug": "Debug",
+    "monthlySpending": "Monthly Spending",
+    "schoolAnalytics": "School Analytics"
   },
   "dashboard": {
     "welcome": "Welcome back, {name}",
@@ -209,6 +211,19 @@
       "parentId": "Parent ID:",
       "rfidToken": "RFID Token:",
       "total": "Total:"
+    },
+    "selectKid": "Select Kid",
+    "products": "Products",
+    "createOrder": "Create Order",
+    "creatingOrder": "Creating Order...",
+    "orderCreated": "Order created successfully: {id}",
+    "noKidsAvailable": "No kids available",
+    "noProductsAvailable": "No products available",
+    "errors": {
+      "fetchFailed": "Failed to fetch data",
+      "noKidSelected": "Please select a kid",
+      "noItems": "Please add at least one item",
+      "createFailed": "Failed to create order"
     }
   },
   "products": {
@@ -737,5 +752,47 @@
       "saturday": "Sat",
       "sunday": "Sun"
     }
+  },
+  "monthlySpending": {
+    "title": "Monthly Spending",
+    "description": "Track and manage monthly spending limits for your kids",
+    "currentMonth": "Current Month Overview",
+    "spendingLimit": "Spending Limit",
+    "currentLimit": "Current Limit",
+    "editProfile": "Edit Kid Profile",
+    "spendingAnalysis": "Spending Analysis",
+    "byProduct": "By Product",
+    "byCategory": "By Category",
+    "topProducts": "Top Products",
+    "noSpendingData": "No spending data available",
+    "noCategoryData": "No category data available",
+    "spent": "Spent",
+    "remaining": "Remaining",
+    "monthlyBudget": "Monthly Budget",
+    "errorFetchingKids": "Failed to load kids data. Please try again.",
+    "errorFetchingSpending": "Failed to load spending data. Please try again."
+  },
+  "schoolAnalytics": {
+    "title": "School Analytics",
+    "description": "View detailed analytics and reports for your schools",
+    "schoolInfo": "School Information",
+    "topProducts": "Top Products",
+    "mostPopular": "Most popular products at this school",
+    "reports": "Reports",
+    "dailyReport": "Daily Report",
+    "monthlyReport": "Monthly Report",
+    "selectDate": "Select Date",
+    "month": "Month",
+    "year": "Year",
+    "totalOrders": "Total Orders",
+    "totalRevenue": "Total Revenue",
+    "kidsServed": "Kids Served",
+    "topProductsMonth": "Top Products This Month",
+    "product": "Product",
+    "quantity": "Quantity",
+    "noReport": "No report available for the selected period",
+    "noProductData": "No product data available",
+    "errorFetchingSchools": "Failed to load schools data. Please try again.",
+    "errorFetchingReports": "Failed to load reports. Please try again."
   }
 }

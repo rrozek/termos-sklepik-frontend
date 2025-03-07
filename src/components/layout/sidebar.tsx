@@ -44,6 +44,28 @@ export function Sidebar() {
       allowedRoles: [UserRole.ADMIN, UserRole.PARENT, UserRole.STAFF],
     },
     {
+      title: t('navigation.monthlySpending'),
+      href: `/${currentLocale}/monthly-spending`,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
+      ),
+      allowedRoles: [UserRole.ADMIN, UserRole.PARENT],
+    },
+    {
+      title: t('navigation.schoolAnalytics'),
+      href: `/${currentLocale}/school-analytics`,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+          <path d="M3 3v18h18" />
+          <path d="M18 9l-6-6-7 7" />
+          <path d="M14 9h4v4" />
+        </svg>
+      ),
+      allowedRoles: [UserRole.ADMIN, UserRole.STAFF],
+    },
+    {
       title: t('navigation.kids'),
       href: `/${currentLocale}/kids`,
       icon: (

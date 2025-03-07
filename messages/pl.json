@@ -88,7 +88,9 @@
     "kids": "Dzieci",
     "schools": "Szkoły",
     "settings": "Ustawienia",
-    "debug": "Debug"
+    "debug": "Debug",
+    "monthlySpending": "Miesięczne Wydatki",
+    "schoolAnalytics": "Analityka Szkół"
   },
   "dashboard": {
     "welcome": "Witaj ponownie, {name}",
@@ -209,6 +211,19 @@
       "parentId": "ID rodzica:",
       "rfidToken": "Brelok RFID:",
       "total": "Suma:"
+    },
+    "selectKid": "Wybierz Dziecko",
+    "products": "Produkty",
+    "createOrder": "Utwórz Zamówienie",
+    "creatingOrder": "Tworzenie Zamówienia...",
+    "orderCreated": "Zamówienie utworzone pomyślnie: {id}",
+    "noKidsAvailable": "Brak dostępnych dzieci",
+    "noProductsAvailable": "Brak dostępnych produktów",
+    "errors": {
+      "fetchFailed": "Nie udało się pobrać danych",
+      "noKidSelected": "Proszę wybrać dziecko",
+      "noItems": "Proszę dodać co najmniej jeden produkt",
+      "createFailed": "Nie udało się utworzyć zamówienia"
     }
   },
   "products": {
@@ -733,5 +748,47 @@
       "saturday": "Sob",
       "sunday": "Nd"
     }
+  },
+  "monthlySpending": {
+    "title": "Miesięczne Wydatki",
+    "description": "Śledź i zarządzaj miesięcznymi limitami wydatków dla swoich dzieci",
+    "currentMonth": "Przegląd Bieżącego Miesiąca",
+    "spendingLimit": "Limit Wydatków",
+    "currentLimit": "Aktualny Limit",
+    "editProfile": "Edytuj Profil Dziecka",
+    "spendingAnalysis": "Analiza Wydatków",
+    "byProduct": "Według Produktu",
+    "byCategory": "Według Kategorii",
+    "topProducts": "Najpopularniejsze Produkty",
+    "noSpendingData": "Brak danych o wydatkach",
+    "noCategoryData": "Brak danych o kategoriach",
+    "spent": "Wydano",
+    "remaining": "Pozostało",
+    "monthlyBudget": "Miesięczny Budżet",
+    "errorFetchingKids": "Nie udało się załadować danych dzieci. Spróbuj ponownie.",
+    "errorFetchingSpending": "Nie udało się załadować danych o wydatkach. Spróbuj ponownie."
+  },
+  "schoolAnalytics": {
+    "title": "Analityka Szkół",
+    "description": "Przeglądaj szczegółowe analizy i raporty dla swoich szkół",
+    "schoolInfo": "Informacje o Szkole",
+    "topProducts": "Najpopularniejsze Produkty",
+    "mostPopular": "Najpopularniejsze produkty w tej szkole",
+    "reports": "Raporty",
+    "dailyReport": "Raport Dzienny",
+    "monthlyReport": "Raport Miesięczny",
+    "selectDate": "Wybierz Datę",
+    "month": "Miesiąc",
+    "year": "Rok",
+    "totalOrders": "Liczba Zamówień",
+    "totalRevenue": "Całkowity Przychód",
+    "kidsServed": "Obsłużone Dzieci",
+    "topProductsMonth": "Najpopularniejsze Produkty w Tym Miesiącu",
+    "product": "Produkt",
+    "quantity": "Ilość",
+    "noReport": "Brak raportu dla wybranego okresu",
+    "noProductData": "Brak danych o produktach",
+    "errorFetchingSchools": "Nie udało się załadować danych szkół. Spróbuj ponownie.",
+    "errorFetchingReports": "Nie udało się załadować raportów. Spróbuj ponownie."
   }
 }

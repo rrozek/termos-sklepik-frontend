@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter, usePathname } from 'next/navigation';
 import { User, UserRole } from '@/types';
@@ -67,12 +67,12 @@ const useIsomorphicPathname = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = useIsomorphicPathname();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   // Helper function to get the current locale from the pathname
   const getCurrentLocale = (): string => {
@@ -245,7 +245,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await loadUserProfile();
   };
 
-  const value = {
+  // Use useMemo to prevent unnecessary re-renders
+  const authContextValue = useMemo(() => ({
     user,
     isAuthenticated: !!user,
     isLoading,
@@ -253,10 +254,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     logout,
     hasRole,
     refreshUser
-  };
+  }), [user, isLoading]); // Only re-create when user or isLoading changes
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={authContextValue}>
       {process.env.NODE_ENV === 'development' && authError && (
         <div
           style={{

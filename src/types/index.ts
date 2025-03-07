@@ -51,7 +51,9 @@ export interface Kid {
   name: string;
   parent_id: string;
   rfid_token: string[];
-  monthly_spending_limit?: number;
+  monthly_spending_limit: number;
+  current_month_spending?: number;
+  remaining_budget?: number;
   is_active: boolean;
   schools?: School[];
   created_at?: string;
@@ -183,4 +185,38 @@ export interface QueryParams {
   sort?: string;
   order?: 'asc' | 'desc';
   [key: string]: any; // Allow for any other filter parameters
+}
+
+// Add new types for monthly spending tracking
+export interface KidMonthlySpending {
+  id: string;
+  kid_id: string;
+  month: number;
+  year: number;
+  spent_amount: number;
+  limit_amount: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+// Add report types
+export interface SpendingReport {
+  period: string; // 'daily', 'weekly', 'monthly'
+  start_date: string;
+  end_date: string;
+  total_spent: number;
+  items_count: number;
+  breakdown_by_product?: Record<string, number>;
+  breakdown_by_category?: Record<string, number>;
+}
+
+export interface SchoolReport {
+  school_id: string;
+  school_name: string;
+  period: string; // 'daily', 'monthly'
+  date: string;
+  total_orders: number;
+  total_revenue: number;
+  total_kids_served: number;
+  top_products: Array<{product_id: string, product_name: string, quantity: number}>;
 }

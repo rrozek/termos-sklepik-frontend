@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { ApiResponse, Kid, KidSchool, Order, Product, School } from '@/types';
+import { ApiResponse, Kid, KidSchool, Order, Product, School, SpendingReport, SchoolReport } from '@/types';
 
 // Default API config
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
@@ -248,7 +248,52 @@ export const kidsApi = {
   },
   removeKidFromSchool: async (kidId: string, schoolId: string) => {
     return apiService.delete<void>(`/kid/${kidId}/school/${schoolId}`);
-  }
+  },
+  getKidMonthlySpending: (kidId: string, month?: number, year?: number) =>
+    apiService.get<ApiResponse<{
+      kid_id: string;
+      kid_name: string;
+      monthly_records: Array<{
+        id: string;
+        kid_id: string;
+        year: number;
+        month: number;
+        spending_amount: string;
+        created_at: string;
+        updated_at: string;
+      }>;
+      orders: Array<{
+        id: string;
+        date: string;
+        total_amount: string;
+        items_count: number;
+      }>;
+      spending_by_product_group: Array<{
+        product_group_id: string;
+        product_group_name: string;
+        amount: number;
+      }>;
+      spending_by_product: Array<{
+        product_id: string;
+        product_name: string;
+        amount: number;
+      }>;
+      total_orders: number;
+      total_spent: number;
+    }>>(`/kid/${kidId}/spending`, {
+      params: { month, year }
+    }),
+  getRemainingBudget: (kidId: string) =>
+    apiService.get<ApiResponse<{
+      kid_id: string;
+      kid_name: string;
+      year: number;
+      month: number;
+      current_spending: number;
+      spending_limit: number;
+      remaining_budget: number;
+      has_limit: boolean;
+    }>>(`/kid/${kidId}/budget`),
 };
 
 // Orders API
@@ -416,4 +461,29 @@ export const getPaginationParams = (query: any) => {
   return { page, limit, skip };
 };
 
+// Add reporting API
+export const reportingApi = {
+  getKidSpendingHistory: (kidId: string, period: string, startDate?: string, endDate?: string) =>
+    apiService.get<ApiResponse<SpendingReport>>(`/kid/${kidId}/spending`, {
+      params: { period, start_date: startDate, end_date: endDate }
+    }),
+
+  getSchoolDailyReport: (schoolId: string, date?: string) =>
+    apiService.get<ApiResponse<SchoolReport>>(`/school/${schoolId}/report/daily`, {
+      params: { date }
+    }),
+
+  getSchoolMonthlyReport: (schoolId: string, month?: number, year?: number) =>
+    apiService.get<ApiResponse<SchoolReport>>(`/school/${schoolId}/report/monthly`, {
+      params: { month, year }
+    }),
+
+  getTopProducts: (schoolId: string, limit?: number, period?: string) =>
+    apiService.get<ApiResponse<Array<{product_id: string, product_name: string, quantity: number}>>>
+      (`/school/${schoolId}/top-products`, {
+        params: { limit, period }
+      }),
+};
+
+// Export all APIs
 export default apiService;
